@@ -1,0 +1,33 @@
+{
+  "name": "backend-csm-inventory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "testis": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "start": "node express/server",
+    "dev": "cross-env NODE_ENV=development nodemon express/server",
+    "tes": "cross-env NODE_ENV=test node express/server"
+  },
+  "author": "dhanz",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "joi": "^17.12.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0",
+    "sequelize-cli": "^6.6.2",
+    "supertest": "^6.3.4"
+  }
+}

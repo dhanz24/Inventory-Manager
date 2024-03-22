@@ -1,0 +1,19 @@
+const express = require('express');
+const transStok = require('../controller/transStokController');
+
+const transStokRoutes = express.Router();
+
+// GET /transStok
+transStokRoutes.get('/transstok', transStok.getAllTransStok);
+
+transStokRoutes.get('/transstok/:id', transStok.getTransStokById);
+
+transStokRoutes.post('/transstok', transStok.createTransStok);
+
+transStokRoutes.put('/transstok/:id', transStok.updateTransStok);
+
+transStokRoutes.delete('/transstok/:id', transStok.deleteTransStok);
+
+transStokRoutes.delete('/transstok/:id/undo', transStok.undoTransStok);
+
+module.exports = transStokRoutes;

@@ -1,0 +1,25 @@
+const express = require('express');
+const chartRoutes = express.Router();
+const chart = require('../controller/chartController');
+
+chartRoutes.get('/chart/daily', async (req, res) => {
+    try {
+        const result = await chart.perHari();
+        res.send(result);
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).send("Terjadi kesalahan di server");
+    }
+});
+
+chartRoutes.get('/chart/weekly', async (req, res) => {
+    try {
+        const result = await chart.perHariSelamaSeminggu();
+        res.send(result);
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).send("Terjadi kesalahan di server");
+    }
+});
+
+module.exports = chartRoutes;

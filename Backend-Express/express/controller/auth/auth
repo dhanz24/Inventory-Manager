@@ -1,0 +1,68 @@
+const jwt = require("jsonwebtoken");
+const db = require("../../../models");
+const User = require("../../../models/user")(db.sequelize, db.Sequelize);
+require("dotenv").config();
+const hash = require("../../../utils/hash");
+const createNewToken = require("../../../utils/createNewToken");
+const {loginSchema} = require("../../validation/authValidation");
+
+
+module.exports = {
+  authenticateUser: async function (req, res, next) {
+    const { error, form } = loginSchema.validate(req.body, { abortEarly: false }); // Validasi form
+    if (error) {
+        return res.status(400).json({ error: error.details.map(x => x.message) });
+    }
+
+    const { email, password } = req.body;
+    const hashedPass = hash(password);
+    try {
+      const user = await User.findOne({
+        where: { email, password: hashedPass },
+        attributes: { exclude: ["password"] },
+      });
+
+      if (!user) {
+        return res
+          .status(401)
+          .send({ message: "email and password are invalid" });
+      }
+      const newToken = createNewToken(user.role, user.user_id);
+      return res.status(200).send({ newToken, ...user.dataValues });
+    } catch (e) {
+      return res.status(500).send({ message: e.message });
+    }
+  },
+
+  authenticateToken: function (req, res, next) {
+    const token = req.headers.authorization;
+
+    if (!token)
+      return res
+        .status(401)
+        .send({ message: "Please login to access this resource" });
+
+    jwt.verify(token, process.env.TOKENKEY, (error, decoded) => {
+      if (error) {
+        res.status(401).send({ message: "Token either modified or expired" });
+        res.redirect("localhost:3000/login");
+        return;
+      }
+      if (decoded) next();
+    });
+  },
+
+  authenticate: function (req, res, next) {
+      try {
+        console.log("ini authenticateLogin");
+        const token = req.headers.authorization;
+        jwt.sign(token, process.env.TOKENKEY);
+        console.log("berhasil validasi");
+        return res.status(401).send({ message: "already login" });
+      } 
+      catch (e) {
+          console.log(e.message);
+          next();
+      }
+    },
+};

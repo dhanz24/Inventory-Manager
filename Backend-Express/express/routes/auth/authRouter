@@ -1,0 +1,11 @@
+const register = require("../../controller/auth/registerController");
+const auth = require("../../controller/auth/auth");
+const express = require("express");
+
+const registerRoutes = express.Router();
+
+//Route for authenticating user
+registerRoutes.post("/register", auth.authenticate, register);
+registerRoutes.post("/login", auth.authenticate, auth.authenticateUser);
+
+module.exports = registerRoutes;

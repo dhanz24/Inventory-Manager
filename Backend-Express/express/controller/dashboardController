@@ -1,0 +1,55 @@
+const { Sequelize, Barang, TransStok } = require('../../models');
+const { Op } = require('sequelize');
+
+const dashboardController = async (req, res) => {
+    try {
+        const totalBarang = await Barang.count();
+        const totalTransStok = await TransStok.count();
+        const totalStok = await Barang.sum('stok');
+       
+        const today = new Date();
+        const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+
+        const transStokToday = await TransStok.count({
+            where: {
+                createdAt: {
+                    [Op.between]: [startOfDay, endOfDay]
+                }
+            }
+        });
+
+        const stokMinimal = await Barang.count({
+            where: {
+            stok: {
+                [Op.lte]: Sequelize.col('minimal')
+            }
+            }
+        });
+
+        const stokOversupply = await Barang.count({
+            where: {
+            stok: {
+                [Op.gte]: Sequelize.col('maksimal')
+            }
+            }
+        });
+
+        const response = {
+            totalBarang,
+            totalTransStok,
+            totalStok,
+            transStokToday,
+            stokMinimal,
+            stokOversupply
+        };
+
+        return res.status(200).json(response);
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({ message: "something happen when fetching dashboard data" });
+    }
+};
+
+module.exports = { dashboardController };

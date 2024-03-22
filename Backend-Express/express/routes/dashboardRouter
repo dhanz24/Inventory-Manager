@@ -1,0 +1,9 @@
+const express = require('express');
+const dashboard = require('../controller/dashboardController');
+
+const dashboardRoutes = express.Router();
+
+// GET /dashboard
+dashboardRoutes.get('/dashboard', dashboard.dashboardController);
+
+module.exports = dashboardRoutes;

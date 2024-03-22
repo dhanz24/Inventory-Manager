@@ -1,0 +1,48 @@
+const hash = require("../../../utils/hash");
+const { generateId } =  require("../../../utils/generateId")
+const db = require("../../../models");
+User = require("../../../models/user")(db.sequelize, db.Sequelize);
+const createNewToken = require("../../../utils/createNewToken");
+const { registerSchema } = require("../../validation/register");
+
+module.exports = async function (req, res, next) {
+  try {
+    const { error, value:form } = registerSchema.validate(req.body, { abortEarly: false }); // Validasi form
+    if (error) {
+        return res.status(400).json({ error: error.details.map(x => x.message) });
+    }
+
+    console.log(form);
+
+    const user_id = generateId();
+    console.log("ini register");
+    
+    const hashPass = await hash(form.password);
+    const role = "user";
+
+    const newToken = createNewToken(role, user_id);
+    
+    try { await User.create({
+      user_id,
+      role,
+      ...form,
+      password: hashPass,
+    });
+    console.log("ini create user");
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+    
+    // kirim data yg sama dengan role
+    const { password, ...user } = form;
+    return res.status(201).send({ newToken, ...user });
+  } 
+  catch (e) {
+    console.log(e.name);
+    if (e.name === "SequelizeConnectionError")
+      return res.status(500).send({ message: "something happen when regsitering" });
+    else if (e.name === "SequelizeUniqueConstraintError")
+      return res.status(409).send({ message: "email already register" });
+  }
+};

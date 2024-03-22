@@ -1,0 +1,4 @@
+'use strict';
+const { createHash } = require("node:crypto");
+require('dotenv').config()
+module.exports =  (value) => createHash('sha256').update(String(value)).digest('hex');

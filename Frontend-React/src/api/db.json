@@ -1,0 +1,322 @@
+{
+  "Barangs": [
+    {
+      "id": "BRG002",
+      "nama_barang": "Buku Tulis 80 Lembar",
+      "harga": 5000,
+      "supplier": "PT. Kertas Maju",
+      "minimal": 30,
+      "maksimal": 150,
+      "stok_sekarang": 75
+    },
+    {
+      "nama_barang": "Penggaris 69 cm",
+      "harga": 2500,
+      "supplier": "PT. Alat Tulis Inovasi",
+      "minimal": 40,
+      "maksimal": 200,
+      "stok_sekarang": 250,
+      "id": "BRG004"
+    },
+    {
+      "id": "BRG005",
+      "nama_barang": "Pensil Warna",
+      "harga": 3000,
+      "supplier": "PT. Alat Tulis Sejahtera",
+      "minimal": 50,
+      "maksimal": 200,
+      "stok_sekarang": 150
+    },
+    {
+      "id": "BRG006",
+      "nama_barang": "Buku Gambar",
+      "harga": 6000,
+      "supplier": "PT. Kertas Maju",
+      "minimal": 30,
+      "maksimal": 150,
+      "stok_sekarang": 120
+    },
+    {
+      "id": "BRG007",
+      "nama_barang": "Penggaris 30 cm",
+      "harga": 1500,
+      "supplier": "PT. Alat Tulis Inovasi",
+      "minimal": 40,
+      "maksimal": 200,
+      "stok_sekarang": 180
+    },
+    {
+      "id": "BRG008",
+      "nama_barang": "Pensil Mekanik",
+      "harga": 4000,
+      "supplier": "PT. Alat Tulis Sejahtera",
+      "minimal": 50,
+      "maksimal": 200,
+      "stok_sekarang": 90
+    },
+    {
+      "id": "BRG009",
+      "nama_barang": "Buku Catatan",
+      "harga": 4500,
+      "supplier": "PT. Kertas Maju",
+      "minimal": 30,
+      "maksimal": 150,
+      "stok_sekarang": 60
+    },
+    {
+      "id": "BRG010",
+      "nama_barang": "Penggaris 20 cm",
+      "harga": 1000,
+      "supplier": "PT. Alat Tulis Inovasi",
+      "minimal": 40,
+      "maksimal": 200,
+      "stok_sekarang": 200
+    },
+    {
+      "id": "BRG011",
+      "nama_barang": "Pensil 4B",
+      "harga": 2500,
+      "supplier": "PT. Alat Tulis Sejahtera",
+      "minimal": 50,
+      "maksimal": 200,
+      "stok_sekarang": 170
+    },
+    {
+      "id": "BRG012",
+      "nama_barang": "Buku Tulis 100 Lembar",
+      "harga": 6000,
+      "supplier": "PT. Kertas Maju",
+      "minimal": 30,
+      "maksimal": 150,
+      "stok_sekarang": 110
+    },
+    {
+      "id": "BRG013",
+      "nama_barang": "Penggaris 50 cm",
+      "harga": 2000,
+      "supplier": "PT. Alat Tulis Inovasi",
+      "minimal": 40,
+      "maksimal": 200,
+      "stok_sekarang": 140
+    },
+    {
+      "id": "BRG014",
+      "nama_barang": "Pensil 6B",
+      "harga": 3000,
+      "supplier": "PT. Alat Tulis Sejahtera",
+      "minimal": 50,
+      "maksimal": 200,
+      "stok_sekarang": 80
+    },
+    {
+      "id": "BRG015",
+      "nama_barang": "Buku Tulis 120 Lembar",
+      "harga": 7000,
+      "supplier": "PT. Kertas Maju",
+      "minimal": 30,
+      "maksimal": 150,
+      "stok_sekarang": 100
+    },
+    {
+      "id": "BRG016",
+      "nama_barang": "Penggaris 80 cm",
+      "harga": 3000,
+      "supplier": "PT. Alat Tulis Inovasi",
+      "minimal": 40,
+      "maksimal": 200,
+      "stok_sekarang": 190
+    },
+    {
+      "id": "BRG017",
+      "nama_barang": "Pensil 8B",
+      "harga": 3500,
+      "supplier": "PT. Alat Tulis Sejahtera",
+      "minimal": 50,
+      "maksimal": 200,
+      "stok_sekarang": 130
+    },
+    {
+      "id": "BRG018",
+      "nama_barang": "Buku Tulis 140 Lembar",
+      "harga": 8000,
+      "supplier": "PT. Kertas Maju",
+      "minimal": 30,
+      "maksimal": 150,
+      "stok_sekarang": 90
+    },
+    {
+      "id": "BRG019",
+      "nama_barang": "Penggaris 100 cm",
+      "harga": 4000,
+      "supplier": "PT. Alat Tulis Inovasi",
+      "minimal": 40,
+      "maksimal": 200,
+      "stok_sekarang": 220
+    },
+    {
+      "id": "BRG020",
+      "nama_barang": "Pensil 10B",
+      "harga": 4000,
+      "supplier": "PT. Alat Tulis Sejahtera",
+      "minimal": 50,
+      "maksimal": 200,
+      "stok_sekarang": 160
+    },
+    {
+      "id": "BRG021",
+      "nama_barang": "Buku Tulis 160 Lembar",
+      "harga": 9000,
+      "supplier": "PT. Kertas Maju",
+      "minimal": 30,
+      "maksimal": 150,
+      "stok_sekarang": 80
+    },
+    {
+      "id": "BRG022",
+      "nama_barang": "Penggaris 120 cm",
+      "harga": 5000,
+      "supplier": "PT. Alat Tulis Inovasi",
+      "minimal": 40,
+      "maksimal": 200,
+      "stok_sekarang": 250
+    },
+    {
+      "id": "BRG023",
+      "nama_barang": "Pensil 12B",
+      "harga": 4500,
+      "supplier": "PT. Alat Tulis Sejahtera",
+      "minimal": 50,
+      "maksimal": 200,
+      "stok_sekarang": 200
+    },
+    {
+      "id": "BRG024",
+      "nama_barang": "Buku Tulis 180 Lembar",
+      "harga": 10000,
+      "supplier": "PT. Kertas Maju",
+      "minimal": 30,
+      "maksimal": 150,
+      "stok_sekarang": 150
+    },
+    {
+      "id": "BRG025",
+      "nama_barang": "Penggaris 140 cm",
+      "harga": 6000,
+      "supplier": "PT. Alat Tulis Inovasi",
+      "minimal": 40,
+      "maksimal": 200,
+      "stok_sekarang": 180
+    },
+    {
+      "id": "BRG026",
+      "nama_barang": "Pensil 14B",
+      "harga": 5000,
+      "supplier": "PT. Alat Tulis Sejahtera",
+      "minimal": 50,
+      "maksimal": 200,
+      "stok_sekarang": 120
+    },
+    {
+      "id": "BRG027",
+      "nama_barang": "Buku Tulis 200 Lembar",
+      "harga": 11000,
+      "supplier": "PT. Kertas Maju",
+      "minimal": 30,
+      "maksimal": 150,
+      "stok_sekarang": 100
+    },
+    {
+      "nama_barang": "Penggaris 160 cm",
+      "harga": 7000,
+      "supplier": "PT. Alat Tulis Inovasi",
+      "minimal": 40,
+      "maksimal": 200,
+      "stok_sekarang": 140,
+      "id": "BRG028"
+    },
+    {
+      "id": "BRG029",
+      "nama_barang": "Pensil 16B",
+      "harga": 6000,
+      "supplier": "PT. Alat Tulis Sejahtera",
+      "minimal": 50,
+      "maksimal": 200,
+      "stok_sekarang": 80
+    },
+    {
+      "id": "BRG030",
+      "nama_barang": "Buku Tulis 220 Lembar",
+      "harga": 12000,
+      "supplier": "PT. Kertas Maju",
+      "minimal": 30,
+      "maksimal": 150,
+      "stok_sekarang": 60
+    },
+    {
+      "id": "BRG031",
+      "nama_barang": "Penggaris 180 cm",
+      "harga": 8000,
+      "supplier": "PT. Alat Tulis Inovasi",
+      "minimal": 40,
+      "maksimal": 200,
+      "stok_sekarang": 190
+    },
+    {
+      "id": "BRG032",
+      "nama_barang": "Pensil 18B",
+      "harga": 7000,
+      "supplier": "PT. Alat Tulis Sejahtera",
+      "minimal": 50,
+      "maksimal": 200,
+      "stok_sekarang": 130
+    },
+    {
+      "nama_barang": "Buku Tulis 240 Lembar",
+      "harga": 13000,
+      "supplier": "PT. Kertas Maju",
+      "minimal": 30,
+      "maksimal": "200",
+      "stok_sekarang": 90,
+      "id": "BRG033"
+    },
+    {
+      "nama_barang": "Penggaris 200 cm",
+      "harga": 9000,
+      "supplier": "PT. Alat Tulis Inovasi",
+      "minimal": "32",
+      "maksimal": 200,
+      "stok_sekarang": 220,
+      "id": "BRG034"
+    },
+    {
+      "id": "23c8",
+      "nama_barang": "asep",
+      "harga": "10000",
+      "supplier": "udin",
+      "minimal": "100",
+      "maksimal": "200"
+    }
+  ],
+  "transaksiStok": [
+    {
+      "id": "1",
+      "id_barang": "BRG034",
+      "tanggal_transaksi": "2024-03-01T00:00:00",
+      "jenis_transaksi": "masuk",
+      "asal/tujuan": "PT. Alat Tulis Inovasi",
+      "jumlah": 50,
+      "stok_awal": 220,
+      "stok_akhir": 270
+    },
+    {
+      "id": "2",
+      "id_barang": "BRG034",
+      "tanggal_transaksi": "2024-03-02T00:00:00",
+      "jenis_transaksi": "keluar",
+      "asal/tujuan": "PT. Alat Tulis Inovasi",
+      "jumlah": 20,
+      "stok_awal": 270,
+      "stok_akhir": 250
+    }
+  ]
+}

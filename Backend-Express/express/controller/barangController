@@ -1,0 +1,106 @@
+const db = require('../../models');
+const Barang = require('../../models/barang')(db.sequelize, db.Sequelize);
+const { Op } = require('sequelize');
+const { addBarangSchema, updateBarangSchema } = require('../validation/barangValidation');
+
+// Mencari barang berdasarkan nama
+const searchBarang = async (req, res) => {
+    const keyword  = req.query.keyword;
+    console.log(keyword);
+    try {
+        const barang = await Barang.findAll({
+            where: {
+                nama_barang: {
+                    [Op.like]: `%${keyword}%`
+                }
+            }
+        });
+        res.status(200).json(barang);
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mencari barang' });
+    }
+};
+
+// Mendapatkan semua data barang
+const getAllBarang = async (req, res) => {
+    try {
+        const barang = await Barang.findAll();
+        res.status(200).json(barang);
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mendapatkan data barang' });
+    }
+};
+
+// Mendapatkan data barang berdasarkan ID
+const getBarangById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const barang = await Barang.findByPk(id);
+        if (barang) {
+            res.status(200).json(barang);
+        } else {
+            res.status(404).json({ error: 'Barang tidak ditemukan' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mendapatkan data barang' });
+    }
+};
+
+// Menambahkan data barang baru
+const createBarang = async (req, res) => {
+    const { error, form } = addBarangSchema.validate(req.body, { abortEarly: false }); // Validasi form
+    if (error) {
+        return res.status(400).json({ error: error.details.map(x => x.message) });
+    }
+
+    try {
+        const barang = await Barang.create(form);
+        return res.status(201).json({ barang, message: "create barang successful" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Gagal menambahkan data barang' });
+    }
+};
+
+
+// Mengupdate data barang berdasarkan ID
+const updateBarang = async (req, res) => {
+    const kode_barang  = req.params.id;
+    const { nama_barang, harga, minimal, maksimal } = req.body;
+    try {
+        const barang = await Barang.findByPk(kode_barang );
+        if (barang) {
+            await barang.update({ nama_barang, harga, minimal, maksimal });
+            res.status(200).json(barang);
+        } else {
+            res.status(404).json({ error: 'Barang tidak ditemukan' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mengupdate data barang' });
+    }
+};
+
+// Menghapus data barang berdasarkan ID
+const deleteBarang = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const barang = await Barang.findByPk(id);
+        if (barang) {
+            await barang.destroy();
+            res.status(200).json({ message: 'Barang berhasil dihapus' });
+        } else {
+            res.status(404).json({ error: 'Barang tidak ditemukan' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal menghapus data barang' });
+    }
+};
+
+module.exports = {
+    searchBarang,
+    getAllBarang,
+    getBarangById,
+    createBarang,
+    updateBarang,
+    deleteBarang,
+};

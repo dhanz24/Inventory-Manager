@@ -1,0 +1,87 @@
+const e = require('express');
+const { Sequelize, Barang, TransStok } = require('../../models');
+const { Op } = require('sequelize');
+
+const perHari = async () => {
+    // Mendapatkan tanggal hari ini
+    const today = new Date();
+    // Menentukan jam awal hari ini
+    const startOfDay = new Date(today);
+    startOfDay.setHours(0, 0, 0, 0);
+    // Menentukan jam akhir hari ini
+    const endOfDay = new Date(today);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    // Menginisialisasi hasil akhir
+    const chartData = [];
+
+    // Iterasi untuk setiap interval 3 jam dalam sehari
+    for (let hour = 0; hour < 24; hour += 3) {
+        // Menentukan waktu awal dan akhir interval
+        const startOfInterval = new Date(today);
+        startOfInterval.setHours(hour, 0, 0, 0);
+        const endOfInterval = new Date(today);
+        endOfInterval.setHours(hour + 3, 0, 0, 0);
+
+        // Mendapatkan data untuk interval saat ini
+        const result = await TransStok.findAll({
+            attributes: [
+                // Format tanggal untuk digunakan sebagai kunci dalam chartData
+                [Sequelize.literal(`TO_CHAR(tanggal_trans, 'Mon DD HH24')`), 'date'],
+                // Menghitung jumlah stok keluar dalam interval ini
+                [Sequelize.fn('SUM', Sequelize.literal(`CASE WHEN jenis_trans = 'keluar' AND tanggal_trans >= '${startOfInterval.toISOString()}' AND tanggal_trans < '${endOfInterval.toISOString()}' THEN jumlah ELSE 0 END`)), 'Stok Keluar'],
+                // Menghitung jumlah stok masuk dalam interval ini
+                [Sequelize.fn('SUM', Sequelize.literal(`CASE WHEN jenis_trans = 'masuk' AND tanggal_trans >= '${startOfInterval.toISOString()}' AND tanggal_trans < '${endOfInterval.toISOString()}' THEN jumlah ELSE 0 END`)), 'Stok Masuk']
+            ],
+            where: {
+                tanggal_trans: {
+                    [Op.between]: [startOfDay, endOfDay]
+                }
+            },
+            group: ['date'], // Menambahkan tanggal_trans ke dalam GROUP BY
+            raw: true
+        });
+
+        // Menyimpan data ke dalam chartData
+        if (result.length > 0) {
+            chartData.push({
+                date: result[0].date, // Menggunakan tanggal dari hasil query untuk chartData
+                'Stok Keluar': result[0]['Stok Keluar'] || 0,
+                'Stok Masuk': result[0]['Stok Masuk'] || 0
+            });
+        }
+    }
+
+    return chartData;
+};
+
+const perHariSelamaSeminggu = async () => {
+    const today = new Date();
+    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    const result = await TransStok.findAll({
+        attributes: [
+            [Sequelize.literal(`TO_CHAR(tanggal_trans, 'YYYY-MM-DD')`), 'date'],
+            [Sequelize.fn('SUM', Sequelize.literal(`CASE WHEN jenis_trans = 'keluar' THEN jumlah ELSE 0 END`)), 'Stok Keluar'],
+            [Sequelize.fn('SUM', Sequelize.literal(`CASE WHEN jenis_trans = 'masuk' THEN jumlah ELSE 0 END`)), 'Stok Masuk']
+        ],
+        where: {
+            tanggal_trans: {
+                [Op.between]: [startOfWeek, endOfWeek]
+            }
+        },
+        group: [Sequelize.literal(`TO_CHAR(tanggal_trans, 'YYYY-MM-DD')`)],
+        order: [[Sequelize.literal(`TO_CHAR(tanggal_trans, 'YYYY-MM-DD')`), 'ASC']],
+        raw: true
+    });
+
+    return result;
+};
+
+
+
+module.exports = { perHari, perHariSelamaSeminggu };

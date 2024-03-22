@@ -1,0 +1,12 @@
+const joi = require('joi');
+
+const transStokSchema = Joi.object({
+    kode_barang: Joi.string().required(),
+    jenis_trans: Joi.string().valid('masuk', 'keluar').required(),
+    supplier: Joi.string().when('jenis_trans', { is: 'masuk', then: Joi.required(), otherwise: Joi.optional() }),
+    tujuan: Joi.string().when('jenis_trans', { is: 'keluar', then: Joi.required(), otherwise: Joi.optional() }),
+    jumlah: Joi.number().integer().min(1).required(),
+    catatan: Joi.string().allow('', null).optional() // memperbolehkan string kosong atau null
+});
+
+module.exports = { transStokSchema };

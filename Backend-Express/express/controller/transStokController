@@ -1,0 +1,178 @@
+const { TransStok, Barang, Sequelize } = require('../../models');
+const { Op } = require('sequelize');    
+
+// Mencari transaksi stok berdasarkan nama barang
+const searchTransStok = async (req, res) => {
+    const { keyword } = req.query;
+    try {
+        const transStok = await TransStok.findAll({
+            where: {
+                nama_barang: {
+                    [Op.like]: `%${keyword}%`
+                }
+            }
+        });
+        res.status(200).json(transStok);
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mencari transaksi stok' });
+    }
+};
+
+// Mendapatkan semua data transaksi stok
+const getAllTransStok = async (req, res) => {
+    try {
+        const transStok = await TransStok.findAll();
+        res.status(200).json(transStok);
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mendapatkan data transaksi stok' });
+    }
+};
+
+// Mendapatkan data transaksi stok berdasarkan ID
+const getTransStokById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const transStok = await TransStok.findByPk(id);
+        if (transStok) {
+            res.status(200).json(transStok);
+        } else {
+            res.status(404).json({ error: 'Transaksi stok tidak ditemukan' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mendapatkan data transaksi stok' });
+    }
+};
+
+// Menambahkan data transaksi stok baru
+const createTransStok = async (req, res) => {
+    const { kode_barang, jenis_trans, jumlah } = req.body;
+
+    try {
+        // Mencari barang berdasarkan kode_barang
+        const barang = await Barang.findByPk(kode_barang);
+        if (!barang) {
+            return res.status(404).json({ error: 'Barang tidak ditemukan' });
+        }
+
+        // Menghitung stok baru berdasarkan jenis transaksi
+        let stok_akhir;
+
+        if (jenis_trans === 'keluar' && jumlah > barang.stok) {
+            return res.status(400).json({ error: 'Stok tidak cukup untuk transaksi keluar' });
+        }
+
+        if (jenis_trans === 'masuk') {
+            stok_akhir = barang.stok + jumlah;
+            
+        } else if (jenis_trans === 'keluar') {
+            stok_akhir = barang.stok - jumlah;
+            if (stok_akhir < 0) {
+                // Memastikan stok tidak menjadi negatif
+                return res.status(400).json({ error: 'Stok tidak cukup untuk transaksi keluar' });
+            }
+        } else {
+            return res.status(400).json({ error: 'Jenis transaksi tidak valid' });
+        }
+
+        // Menciptakan record transaksi baru dengan stok_awal dan stok_akhir
+        const transStok = await TransStok.create({
+            ...req.body, // Asumsi bahwa body request sudah mengandung semua field yang diperlukan kecuali stok_awal dan stok_akhir
+            stok_awal: barang.stok, // stok sebelum diperbarui
+            stok_akhir: stok_akhir, // stok setelah diperbarui
+        },);
+
+        // Update stok barang
+        await barang.update({ stok: stok_akhir });
+
+        return res.status(201).json({ transStok, message: "Transaksi stok berhasil dibuat" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Gagal menambahkan data transaksi stok' });
+    }
+};
+
+// Mengupdate data transaksi stok berdasarkan ID
+const updateTransStok = async (req, res) => {
+    const kode_transaksi = req.params.id;
+    const { nama_barang, jumlah, tipe } = req.body;
+    try {
+        const transStok = await TransStok.findByPk(kode_transaksi);
+        if (transStok) {
+            await transStok.update({ nama_barang, jumlah, tipe });
+            res.status(200).json(transStok);
+        } else {
+            res.status(404).json({ error: 'Transaksi stok tidak ditemukan' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mengupdate data transaksi stok' });
+    }
+};
+
+// Menghapus data transaksi stok berdasarkan ID
+const deleteTransStok = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const transStok = await TransStok.findByPk(id);
+        if (transStok) {
+            await transStok.destroy();
+            res.status(200).json({ message: 'Transaksi stok berhasil dihapus' });
+        } else {
+            res.status(404).json({ error: 'Transaksi stok tidak ditemukan' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal menghapus data transaksi stok' });
+    }
+};
+
+// Mengembalikan stok barang ke transaksi sebelumnya
+const undoTransStok = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const transStok = await TransStok.findByPk(id);
+        if (!transStok) {
+            res.status(404).json({ error: 'Transaksi stok tidak ditemukan' });
+        } else{
+            kode_barang = transStok.kode_barang;
+        }
+
+        // Mencari barang berdasarkan kode_barang
+        const barang = await Barang.findByPk(kode_barang);
+        if (!barang) {
+            return res.status(404).json({ error: 'Barang tidak ditemukan' });
+        }
+
+        // Mencari transaksi stok terbaru untuk barang tersebut
+        const latestTransStok = await TransStok.findOne({
+            where: {
+                kode_barang: kode_barang
+            },
+            order: [['createdAt', 'DESC']]
+        });
+
+        if (!latestTransStok) {
+            return res.status(404).json({ error: 'Tidak ada transaksi stok untuk barang ini' });
+        }
+
+        // Menghapus transaksi stok terbaru
+        await latestTransStok.destroy();
+
+        // Mengupdate stok barang dengan stok sebelum transaksi terbaru
+        await barang.update({ stok: latestTransStok.stok_awal });
+
+        return res.status(200).json({ message: 'Transaksi stok berhasil di-undo' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Gagal melakukan undo transaksi stok' });
+    }
+};
+
+module.exports = {
+    getAllTransStok,
+    getTransStokById,
+    createTransStok,
+    updateTransStok,
+    deleteTransStok,
+    undoTransStok,
+};
+

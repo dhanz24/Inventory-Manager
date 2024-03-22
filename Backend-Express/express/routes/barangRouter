@@ -1,0 +1,19 @@
+const express = require('express');
+const barang = require('../controller/barangController');
+
+const barangRoutes = express.Router();
+
+
+barangRoutes.get('/barang', barang.getAllBarang);
+
+barangRoutes.get('/barang/:id', barang.getBarangById);
+
+barangRoutes.get('/search/barang', barang.searchBarang);
+
+barangRoutes.post('/barang', barang.createBarang);
+
+barangRoutes.put('/barang/:id', barang.updateBarang);
+
+barangRoutes.delete('/barang/:id', barang.deleteBarang);
+
+module.exports = barangRoutes;

@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background-color: #F7FAFC;
+}
+
+*{
+    scroll-behavior: smooth;
+}
+
+/* Custom CSS table barang */
+.custom-table {
+    width: 100%; /* Adjust based on your requirement */
+    table-layout: fixed; /* Important for fixed layout */
+  }
+  
+  .custom-header-cell, .custom-cell {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 0; /* Ensures content does not overflow */
+  }

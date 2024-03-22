@@ -1,0 +1,116 @@
+const { User } = require('../../models');
+const { Op } = require('sequelize');
+const { generateId } =  require("../../utils/generateId")
+const hash = require("../../utils/hash");
+
+// Mencari user berdasarkan nama
+const searchUser = async (req, res) => {
+    const keyword = req.query.keyword;
+    console.log(keyword);
+    try {
+        const users = await User.findAll({
+            where: {
+                [Op.or]: [
+                    { firstName: { [Op.like]: `%${keyword}%` } },
+                    { lastName: { [Op.like]: `%${keyword}%` } }
+                ]
+            }
+        });
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mencari user' });
+    }
+};
+
+// Mendapatkan semua data user
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.findAll();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mendapatkan data user' });
+    }
+};
+
+// Mendapatkan data user berdasarkan ID
+const getUserById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await User.findByPk(id);
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ error: 'User tidak ditemukan' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mendapatkan data user' });
+    }
+};
+
+// Menambahkan data user baru
+const createUser = async (req, res) => {
+    const user_id = generateId();
+    const form = req.body;
+    const hashPass = hash(form.password);
+    const role = "user";
+
+    try { await User.create({
+        user_id,
+        role,
+        ...form,
+        password: hashPass,
+      });
+    return res.status(201).json({ form, message: "User berhasil ditambahkan" });
+
+    } catch (e) {
+        console.log(e.name);
+    if (e.name === "SequelizeConnectionError")
+      return res
+        .status(500)
+        .send({ message: "something happen when regsitering" });
+    else if (e.name === "SequelizeUniqueConstraintError")
+      return res.status(409).send({ message: "email already register" });
+  }
+};
+
+// Mengupdate data user berdasarkan ID
+const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { firstName, lastName, email, password, role, no_hp, foto_url } = req.body;
+    try {
+        const user = await User.findByPk(id);
+        if (user) {
+            await user.update({ firstName, lastName, email, password, role, no_hp, foto_url });
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ error: 'User tidak ditemukan' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal mengupdate data user' });
+    }
+};
+
+// Menghapus data user berdasarkan ID
+const deleteUser = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await User.findByPk(id);
+        if (user) {
+            await user.destroy();
+            res.status(200).json({ message: 'User berhasil dihapus' });
+        } else {
+            res.status(404).json({ error: 'User tidak ditemukan' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Gagal menghapus data user' });
+    }
+};
+
+module.exports = {
+    searchUser,
+    getAllUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser,
+};
