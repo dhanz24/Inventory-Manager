@@ -1,39 +1,35 @@
-# Vite-React-Dashboard
+# Frontend for Inventory Manager - PT Bejana Varia Globalindo
 
-[![Screenshot-2023-11-09-200731.png](https://i.postimg.cc/PJCx9YQP/Screenshot-2023-11-09-200731.png)](https://postimg.cc/4HTshKMg)
+## Tech Stack
 
-## Introduction
-
-The Dynamic Dashboard Project is a cutting-edge web application that leverages the latest technologies to deliver a seamless and visually appealing user experience. This project is built with Tremor for dashboard, Vite for speedy development, React for a component-based architecture, and Tailwind for a utility-first CSS framework.
-
-Site Address : https://vite-dashboard-temp.netlify.app/
-
-## Introduction
-
-Briefly introduce your project, mentioning the technologies used and its purpose.
-
-## Features
-
-Highlight the key features of your dashboard.
+- **React.js**: For building a dynamic and responsive user interface.
+- **Vite**: Leveraged as the build tool for a faster and more efficient development experience.
+- **Tailwind CSS**: Utilized for styling, offering a highly customizable and utility-first CSS framework.
+- **Axios**: For making HTTP requests to the backend API, facilitating smooth data exchange.
+- **React Router**: To manage navigation within the application, ensuring a seamless user experience.
 
 ## Getting Started
 
-Provide instructions on how to get the project up and running on a local machine.
+Follow these instructions to get the frontend application running on your local machine.
 
 ### Prerequisites
 
-List any software or dependencies that need to be installed before running the project.
+- Ensure you have Node.js (version 14 or above) installed.
+- The backend system should be running and accessible. Refer to the backend repository for setup instructions.
 
 ### Installation
 
-Step-by-step guide on installing the project.
-
-## Usage
-
-Explain how to use the dashboard and any additional configurations.
-
-## Contributing
-
-If you want others to contribute, provide guidelines for contributing to your project.
-
-
+1. Install the dependencies:
+   ```bash
+   npm install
+   ```
+2. Copy the `.env.example` file to `.env` and configure the environment variables according to your setup, particularly the backend API URL.
+   ```bash
+   cp .env.example .env
+   ```
+3. Run the application in development mode:
+   ```bash
+   npm run dev
+   ```
+   The application should now be accessible at `http://localhost:5173` or another port specified by the output.
+   
