@@ -2,6 +2,8 @@
 
 Welcome to the Inventory Manager, a cutting-edge inventory management solution designed to help PT Bejana Varia Globalindo (BVG) streamline their operations and enhance profitability through efficient and effective inventory control. This application is engineered with a suite of essential features tailored to meet the dynamic needs of inventory management, ensuring seamless operational flow and informed decision-making.
 
+![image](https://github.com/dhanz24/Inventory-Manager/assets/122549875/8cb9cee3-2ad2-40e5-b053-d1d107357ced)
+
 ## Features
 
 ### Efficient Item Data Management
